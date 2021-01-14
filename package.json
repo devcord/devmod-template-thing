@@ -1,0 +1,33 @@
+{
+  "name": "devmod",
+  "version": "1.0.0",
+  "description": "Devmod in 2021?",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch-ts": "tsc -w",
+    "watch-node": "nodemon dist/index.js",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "lint": "eslint ./src/**/*",
+    "lint-fix": "eslint ./src/**/* --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "CC",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "pm2": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.11.8",
+    "@types/ws": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
+    "concurrently": "^5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript": "^6.3.1",
+    "eslint-plugin-import": "^2.19.1",
+    "nodemon": "^2.0.4",
+    "typescript": "^4.0.3"
+  }
+}
