@@ -1,14 +1,25 @@
 import { Client as DiscordClient } from 'discord.js';
 import './env';
+import 'reflect-metadata';
 import * as modules from './modules';
+import { createCommandRegisterer, establishDbConnection } from './services';
 
-const bot = new DiscordClient();
+const init = async () => {
+  const db = await establishDbConnection();
+  const client = new DiscordClient();
 
-Object.entries(modules).forEach(([mod, register]) => {
-  register({ bot });
-  console.log(`Registered module: ${mod}`);
-});
+  Object.entries(modules).forEach(([mod, register]) => {
+    const ctx = { client, db };
+    const registerCommand = createCommandRegisterer(ctx);
 
-bot.login(process.env.BOT_TOKEN)
-  .then(() => console.log('Bot logged in successfully'))
-  .catch((e) => console.log('Bot login failed: ', e));
+    register({ client, db, registerCommand });
+    console.log(`Registered module: ${mod}`);
+  });
+
+  await client.login(process.env.BOT_TOKEN);
+  console.log('Bot logged in successfully');
+};
+
+init()
+  .then(() => console.log('Bot initialised'))
+  .catch((e) => console.error('Bot initialisation failed: ', e));

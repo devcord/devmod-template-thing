@@ -1,10 +1,12 @@
-import { Module } from '../module';
+import { Command, Module } from '../types';
 
-export const Ping: Module = ({ bot }) => {
-  bot.on('message', (msg) => {
-    if (msg.author.bot) {
-      return;
-    }
-    msg.channel.send('pong');
+export const Ping: Module = ({ registerCommand }) => {
+  const pingCommand: Command = {
+    name: 'ping',
+    description: 'Ping the bot',
+  };
+
+  registerCommand(pingCommand, ({ message }) => {
+    message.channel.send('Pong');
   });
 };
