@@ -12,9 +12,9 @@ export const Tag: Module = ({ registerCommand, db }) => {
   ) => {
     const tag = await tagRepository.findOne({ name });
     if (tag !== undefined) {
-      message.channel.send(`${userMention} ${tag.body}`);
+      await message.channel.send(`${userMention} ${tag.body}`);
     } else {
-      message.channel.send(`Tag \`${name}\` does not exist.`);
+      await message.reply(`Tag \`${name}\` does not exist.`);
     }
   };
 
@@ -22,9 +22,9 @@ export const Tag: Module = ({ registerCommand, db }) => {
     const tags = await tagRepository.find();
 
     if (tags.length === 0) {
-      message.channel.send('There are currently no tags!');
+      await message.reply('There are currently no tags!');
     } else {
-      message.channel.send(tags.map((tag) => `\`${tag.name}\``).join('\n'));
+      await message.reply(tags.map((tag) => `\`${tag.name}\``).join('\n'));
     }
   };
 
@@ -38,12 +38,12 @@ export const Tag: Module = ({ registerCommand, db }) => {
 
     const alreadyExists = (await tagRepository.findOne({ name })) !== undefined;
     if (alreadyExists) {
-      message.channel.send(`Tag \`${name}\` already exists.`);
+      await message.reply(`Tag \`${name}\` already exists.`);
       return;
     }
 
     await tagRepository.insert({ name, body });
-    message.channel.send(`Tag \`${name}\` created!`);
+    await message.reply(`Tag \`${name}\` created!`);
   };
 
   const handleEditTag = async (message: Message, tagInfo: string) => {
@@ -51,17 +51,17 @@ export const Tag: Module = ({ registerCommand, db }) => {
 
     const tag = await tagRepository.findOne({ name });
     if (tag === undefined) {
-      message.channel.send(`Tag \`${name}\` does not exist.`);
+      await message.reply(`Tag \`${name}\` does not exist.`);
       return;
     }
 
     await tagRepository.save({ ...tag, body });
-    message.channel.send(`Tag \`${name}\` updated!`);
+    await message.reply(`Tag \`${name}\` updated!`);
   };
 
   const handleDeleteTag = async (message: Message, name: string) => {
     await tagRepository.delete({ name });
-    message.channel.send(`Tag \`${name}\` deleted!`);
+    await message.reply(`Tag \`${name}\` deleted!`);
   };
 
   registerCommand({
