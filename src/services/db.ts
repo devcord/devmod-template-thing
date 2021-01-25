@@ -1,5 +1,5 @@
 import { createConnection } from 'typeorm';
-import { Tag } from '../entities';
+import { Tag, Task } from '../entities';
 
 export const establishDbConnection = () => createConnection({
   type: 'mysql',
@@ -10,6 +10,7 @@ export const establishDbConnection = () => createConnection({
   database: process.env.MYSQL_DATABASE,
   entities: [
     Tag,
+    Task,
   ],
   synchronize: true,
   logging: false,

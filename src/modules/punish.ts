@@ -3,7 +3,7 @@ import { CommandOptionType, Module } from '../types';
 export const Punish: Module = ({ registerCommand, scheduleTask }) => {
   const punishments = {
     spam: (user: string) => {
-      scheduleTask('hello', '2d', user);
+      scheduleTask('unmute', '5s', user);
     },
   };
 
