@@ -2,17 +2,16 @@ import { Client as DiscordClient } from 'discord.js';
 import './env';
 import 'reflect-metadata';
 import * as modules from './modules';
-import { createCommandRegisterer, establishDbConnection } from './services';
+import { createCommandRegisterer, createScheduler, establishDbConnection } from './services';
 
 const init = async () => {
   const db = await establishDbConnection();
   const client = new DiscordClient();
+  const scheduleTask = createScheduler(db);
+  const registerCommand = createCommandRegisterer({ client, db });
 
   Object.entries(modules).forEach(([mod, register]) => {
-    const ctx = { client, db };
-    const registerCommand = createCommandRegisterer(ctx);
-
-    register({ client, db, registerCommand });
+    register({ client, db, registerCommand, scheduleTask });
     console.log(`Registered module: ${mod}`);
   });
 
